@@ -4,7 +4,7 @@ helm repo add windmill https://windmill-labs.github.io/windmill-helm-charts/
 
 gcloud compute addresses create sre-platlab --global
 
-helm upgrade --install windmill-chart windmill/windmill  \
+helm upgrade --install windmill-chart ./charts/windmill  \
       --namespace=windmill             \
       -f value.yaml \
       --create-namespace

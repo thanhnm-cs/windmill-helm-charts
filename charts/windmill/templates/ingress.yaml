@@ -1,15 +1,5 @@
 ---
 {{- if .Values.ingress.enabled }}
-apiVersion: networking.gke.io/v1
-kind: ManagedCertificate
-metadata:
-  name: sre-platlab
-spec:
-  domains:
-    - {{ .Values.windmill.baseDomain }}
-{{- end }}
----
-{{- if .Values.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:

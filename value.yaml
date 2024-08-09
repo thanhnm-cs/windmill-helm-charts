@@ -1,0 +1,97 @@
+# windmill root values block
+windmill:
+  # domain as shown in browser, this is used together with `baseProtocol` as part of the BASE_URL environment variable in app and worker container and in the ingress resource, if enabled
+  baseDomain: sre-platlab.ghn.dev
+  baseProtocol: http
+  # postgres URI, pods will crashloop if database is unreachable, sets DATABASE_URL environment variable in app and worker container
+  databaseUrl: postgres://postgres:windmill@windmill-postgresql/windmill?sslmode=disable
+  # replica for the application app
+  appReplicas: 2
+  # replicas for the workers, jobs are executed on the workers
+  lspReplicas: 2
+  workerGroups:
+    # The default worker group is the one that will execute jobs with any taggs  except the native ones. Windmill has a default worker group configuration for it
+    - name: "default"
+      replicas: 3
+      # -- Annotations to apply to the pods
+      annotations: {}
+
+      # -- Labels to apply to the pods
+      labels: {}
+
+      # -- Node selector to use for scheduling the pods
+      nodeSelector: {}
+
+      # -- Tolerations to apply to the pods
+      tolerations: []
+
+      # -- Affinity rules to apply to the pods
+      affinity: {}
+
+      # -- Resource limits and requests for the pods
+      resources:
+        requests:
+          memory: "1028Mi"
+          cpu: "500m"
+        limits:
+          memory: "2048Mi"
+          cpu: "1000m"
+
+      # -- Extra environment variables to apply to the pods
+      extraEnv: []
+
+      # -- Extra sidecar containers
+      extraContainers: []
+
+      # -- Mode for workers, defaults to "worker" - alternative "agent" requires Enterprise license
+      mode: "worker"
+
+    # Thenative worker group will only execute native jobs. Windmill has a default worker group configuration for it
+    - name: "native"
+      replicas: 4
+      # -- Resource limits and requests for the pods
+      resources:
+        requests:
+          memory: "128Mi"
+          cpu: "100m"
+        limits:
+          memory: "256Mi"
+          cpu: "200m"
+
+      # -- Extra environment variables to apply to the pods
+      extraEnv: []
+
+      # -- Extra sidecar containers
+      extraContainers: []
+
+      # -- Mode for workers, defaults to "worker" - alternative "agent" requires Enterprise license
+      mode: "worker"
+
+    - name: "gpu"
+      replicas: 0
+
+  # Use those to override the tag or image used for the app and worker containers. Windmill uses the same image for both.
+  # By default, if enterprise is enable, the image is set to ghcr.io/windmill-labs/windmill-ee, otherwise the image is set to ghcr.io/windmill-labs/windmill
+  #tag: "mytag"
+  #image: "ghcr.io/windmill-labs/windmill"
+
+# enable postgres (bitnami) on kubernetes
+postgresql:
+  enabled: true
+
+# enable minio (bitnami) on kubernetes
+minio:
+  enabled: false
+
+# Configure Ingress
+ingress:
+  # className: ""
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: sre-platlab
+    networking.gke.io/managed-certificates: managed-cert
+    kubernetes.io/ingress.class: "gce"
+
+# enable enterprise features
+enterprise:
+  # -- enable windmill enterprise, requires license key.
+  enabled: false

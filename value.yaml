@@ -72,8 +72,11 @@ windmill:
 
   # Use those to override the tag or image used for the app and worker containers. Windmill uses the same image for both.
   # By default, if enterprise is enable, the image is set to ghcr.io/windmill-labs/windmill-ee, otherwise the image is set to ghcr.io/windmill-labs/windmill
-  #tag: "mytag"
-  #image: "ghcr.io/windmill-labs/windmill"
+  tag: "1"
+  image: "asia-southeast1-docker.pkg.dev/ghnex-v2-testing-234905/test/thanhnm2test"
+  lsp:
+    image: "asia-southeast1-docker.pkg.dev/ghnex-v2-testing-234905/test/thanhnm2test-lsp"
+    tag: "1"
 
 # enable postgres (bitnami) on kubernetes
 postgresql:

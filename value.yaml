@@ -91,8 +91,8 @@ ingress:
   # className: ""
   annotations:
     kubernetes.io/ingress.global-static-ip-name: sre-platlab
-    networking.gke.io/managed-certificates: managed-cert
-    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/managed-certificates: sre-platlab
+    kubernetes.io/ingress.class: "nginx"
 
 # enable enterprise features
 enterprise:
